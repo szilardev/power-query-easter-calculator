@@ -10,11 +10,25 @@
  */
 
 let 
-    EasterDate = (yearNumOrDateOrDateTime as any, optional holidayName as any, optional julianCalendar as any) as date => 
+    EasterDate = (yearNumOrDateOrDateTime as any meta [
+                                                        Documentation.FieldCaption = "Year, date or datetime",
+                                                        Documentation.FieldDescription = "Year number or a value containing the year."
+                                                      ], 
+                  optional holidayName as any meta [
+                                                    Documentation.FieldCaption = "Holiday name or offset",
+                                                    Documentation.FieldDescription = "Easter, GoodFriday, EasterMonday, Pentecost, PentecostMonday or day offset."
+                                                   ], 
+                  optional julianCalendar as any meta [
+                                                        Documentation.FieldCaption = "Use Julian calendar logic",
+                                                        Documentation.FieldDescription = "False or null uses Gregorian logic. True uses Julian calendar logic."
+                                                      ]) as date meta [
+                                                                        Documentation.Name = "EasterDate",
+                                                                        Documentation.LongDescription = "Calculates Easter Sunday and Easter-related moving holidays."
+                                                                      ] => 
     let
                     getYear           = yearNumOrDateOrDateTime, 
                     getHolidayName    = if holidayName = null or holidayName = "" then null 
-                                        else try Number.From(holidayName) otherwise Text.Replace(Text.Lower(holidayName), " ", ""), 
+                                        else try Number.From(holidayName) otherwise Text.Remove(Text.Lower(holidayName), {" ", "_", "-"}), 
                     getJulianCalendar = if julianCalendar = "true" or julianCalendar = true then true 
                                         else if julianCalendar = null or julianCalendar = "null" or julianCalendar = "" or julianCalendar = "false" or julianCalendar = false then false
                                         else error Error.Record("Invalid julianCalendar value", "The julianCalendar can only be null, true or false!"),
@@ -57,7 +71,7 @@ let
 
                     N =      if getJulianCalendar             then 6
                         else if year >= 1583 and year <= 1699 then 2
-                        else if year >= 1700 and year <= 1899 then 3
+                        else if year >= 1700 and year <= 1799 then 3
                         else if year >= 1800 and year <= 1899 then 4
                         else if year >= 1900 and year <= 2099 then 5
                         else if year >= 2100 and year <= 2199 then 6
