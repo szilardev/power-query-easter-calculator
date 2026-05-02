@@ -1,16 +1,52 @@
-# Power Query Easter (Good Friday, Pentecost) Calculator
-Power Query function, which calculates the date of Easter for the year received as a parameter, and is able to determine other moving holidays related to Easter (Good Friday, Pentecost).
+# Power Query Easter Holiday Calculator
 
-## Syntax
+A reusable Power Query M function for calculating Easter Sunday and Easter-related moving holidays.
+
+Useful for Power BI and Excel calendar tables, working-day calculations, holiday-aware reporting and seasonal business analysis.
+
+## Features
+
+- Calculates Easter Sunday
+- Calculates Good Friday
+- Calculates Easter Monday
+- Calculates Pentecost Sunday
+- Calculates Pentecost Monday
+- Accepts year, text, date and datetime input
+- Supports Gregorian and Julian calendar calculation logic
+
+## Function syntax
+
+```m
+EasterDate(
+    yearNumOrDateOrDateTime as any,
+    optional holidayName as nullable any,
+    optional julianCalendar as nullable any
+) as date
 ```
-EasterDate(yearNumOrDateOrDateTime as any, optional holidayName as nullable any, optional julianCalendar as nullable any) as date
-```
+
+## Parameters
+| Parameter                 | Type                         | Description                                                    |
+| ------------------------- | ---------------------------- | -------------------------------------------------------------- |
+| `yearNumOrDateOrDateTime` | number, text, date, datetime | The year or a value containing the year                        |
+| `holidayName`             | text, number, optional       | Holiday name or day offset from Easter                         |
+| `julianCalendar`          | logical, optional            | `false` or `null` for Gregorian logic, `true` for Julian logic |
+
+### Supported holiday values
+| Value                          | Offset from Easter Sunday |
+| ------------------------------ | ------------------------: |
+| `GoodFriday`                   |                        -2 |
+| `Easter`, `EasterSunday`       |                         0 |
+| `EasterMonday`                 |                         1 |
+| `Pentecost`, `PentecostSunday` |                        49 |
+| `PentecostMonday`              |                        50 |
+
+
 
 ## About
 Possible parameters, their types and accepted values.
 + **yearNumOrDateOrDateTime** - number, text, date, datetime
 + **holidayName** (optional) - text, number - allowed values: Easter, EasterSunday, EasterMonday, GoodFriday, Pentecost, PentecostSunday, PentecostMonday or day modifier -2, 0, 1, 49, 50
-+ **julianCalendar** (optional) - logical
++ **julianCalendar** (optional) - logical - returns the Easter date in the Julian calendar logic, represented as a Power Query date value. It does not automatically convert the result to the Gregorian civil calendar date used today.
 
 ## Example 
 
